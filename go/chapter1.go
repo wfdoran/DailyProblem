@@ -97,6 +97,35 @@ func SortInterval(a []int) (int, int) {
 	return sort_lo, sort_hi
 }
 
+func SortInterval2(a []int) (int, int) {
+	n := len(a)
+
+	max_seen := a[0]
+	sort_hi := -1
+	for i := 0; i < n; i++ {
+		v := a[i]
+		if v > max_seen {
+			max_seen = v
+		}
+		if v < max_seen {
+			sort_hi = i
+		}
+	}
+
+	min_seen := a[n-1]
+	sort_lo := n
+	for i := n - 1; i >= 0; i-- {
+		v := a[i]
+		if v < min_seen {
+			min_seen = v
+		}
+		if v > min_seen {
+			sort_lo = i
+		}
+	}
+	return sort_lo, sort_hi
+}
+
 func main() {
 	x := []int{1, 2, 3, 4, 5}
 	fmt.Println(ArrayProd(x))

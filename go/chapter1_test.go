@@ -50,7 +50,7 @@ func TestSortInterval(t *testing.T) {
 		in := []int{3, 7, 5, 6, 9}
 		want_lo := 1
 		want_hi := 3
-		lo, hi := SortInterval(in)
+		lo, hi := SortInterval2(in)
 
 		if lo != want_lo || hi != want_hi {
 			t.Error("SortInterval wrong")
@@ -62,7 +62,7 @@ func TestSortInterval(t *testing.T) {
 		in := []int{3, 7, 1, 8, 9}
 		want_lo := 0
 		want_hi := 2
-		lo, hi := SortInterval(in)
+		lo, hi := SortInterval2(in)
 
 		if lo != want_lo || hi != want_hi {
 			t.Error("SortInterval wrong")
