@@ -47,6 +47,22 @@ func ArrayProd2(a []int) []int {
 	return rv
 }
 
+func ArrayProd3(a []int) []int {
+	n := len(a)
+	rv := make([]int, n)
+	rv[0] = 1
+	for i := range n - 1 {
+		rv[i+1] = rv[i] * a[i]
+	}
+
+	trail := 1
+	for i := n - 1; i >= 0; i-- {
+		rv[i] *= trail
+		trail *= a[i]
+	}
+	return rv
+}
+
 func main() {
 	x := []int{1, 2, 3, 4, 5}
 	fmt.Println(ArrayProd(x))
