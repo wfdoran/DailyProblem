@@ -63,6 +63,40 @@ func ArrayProd3(a []int) []int {
 	return rv
 }
 
+func SortInterval(a []int) (int, int) {
+	n := len(a)
+	var stack []int
+
+	sort_lo := n
+	for i := 0; i < n; i++ {
+		v := a[i]
+		for len(stack) > 0 && v < stack[len(stack)-1] {
+			stack = stack[:len(stack)-1]
+			if len(stack) < sort_lo {
+				sort_lo = len(stack)
+			}
+		}
+		stack = append(stack, v)
+	}
+
+	stack = stack[:0]
+	sort_hi := -1
+	for i := n - 1; i >= 0; i-- {
+		v := a[i]
+		for len(stack) > 0 && v > stack[len(stack)-1] {
+			stack = stack[:len(stack)-1]
+			x := n - 1 - len(stack)
+			if x > sort_hi {
+				sort_hi = x
+			}
+		}
+		stack = append(stack, v)
+
+	}
+	fmt.Println(sort_lo, sort_hi)
+	return sort_lo, sort_hi
+}
+
 func main() {
 	x := []int{1, 2, 3, 4, 5}
 	fmt.Println(ArrayProd(x))
