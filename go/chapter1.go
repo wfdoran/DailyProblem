@@ -126,6 +126,28 @@ func SortInterval2(a []int) (int, int) {
 	return sort_lo, sort_hi
 }
 
+func max(a ...int) int {
+	rv := a[0]
+
+	for _, v := range a[1:] {
+		if v > rv {
+			rv = v
+		}
+	}
+	return rv
+}
+
+func MaxArraySum(a []int) int {
+	rv := 0
+	curr := 0
+
+	for _, v := range a {
+		curr = max(curr+v, v, 0)
+		rv = max(curr, rv)
+	}
+	return rv
+}
+
 func main() {
 	x := []int{1, 2, 3, 4, 5}
 	fmt.Println(ArrayProd(x))

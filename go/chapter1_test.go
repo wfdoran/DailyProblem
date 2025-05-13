@@ -71,3 +71,23 @@ func TestSortInterval(t *testing.T) {
 	}
 
 }
+
+func TestMaxArraySum(t *testing.T) {
+	{
+		in := []int{34, -50, 42, 14, -5, 86}
+		want := 137
+		actual := MaxArraySum(in)
+		if actual != want {
+			t.Errorf("actual %d, want %d", actual, want)
+		}
+	}
+
+	{
+		in := []int{-5, -1, -8, -9}
+		want := 0
+		actual := MaxArraySum(in)
+		if actual != want {
+			t.Errorf("actual %d, want %d", actual, want)
+		}
+	}
+}
