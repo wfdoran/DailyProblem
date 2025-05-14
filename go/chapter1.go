@@ -148,41 +148,41 @@ func MaxArraySum(a []int) int {
 	return rv
 }
 
-type Tree struct {
+type TreeNode struct {
 	Value      int
 	NumSmaller int
-	Left       *Tree
-	Right      *Tree
+	Left       *TreeNode
+	Right      *TreeNode
+}
+
+func newTreeNode(v int) *TreeNode {
+	var node TreeNode
+	node.Value = v
+	node.NumSmaller = 0
+	node.Left = nil
+	node.Right = nil
+
+	return &node
 }
 
 func SmallerRight(a []int) []int {
 	n := len(a)
 	rv := make([]int, n)
 
-	var root_node Tree
-	var root *Tree = &root_node
-	root.Value = a[n-1]
-	root.NumSmaller = 0
-	root.Left = nil
-	root.Right = nil
+	var root *TreeNode = newTreeNode(a[n-1])
 	rv[n-1] = 0
 
 	for i := n - 2; i >= 0; i-- {
 		v := a[i]
 
 		num_smaller := 0
-		var node *Tree = root
+		var node *TreeNode = root
 
 		for {
 			if v < node.Value {
 				node.NumSmaller += 1
 				if node.Left == nil {
-					var new_node Tree
-					new_node.Value = v
-					new_node.NumSmaller = 0
-					new_node.Left = nil
-					new_node.Right = nil
-					node.Left = &new_node
+					node.Left = newTreeNode(v)
 					break
 				} else {
 					node = node.Left
@@ -193,12 +193,7 @@ func SmallerRight(a []int) []int {
 					num_smaller += 1
 				}
 				if node.Right == nil {
-					var new_node Tree
-					new_node.Value = v
-					new_node.NumSmaller = 0
-					new_node.Left = nil
-					new_node.Right = nil
-					node.Right = &new_node
+					node.Right = newTreeNode(v)
 					break
 				} else {
 					node = node.Right
