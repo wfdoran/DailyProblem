@@ -148,6 +148,70 @@ func MaxArraySum(a []int) int {
 	return rv
 }
 
+type Tree struct {
+	Value      int
+	NumSmaller int
+	Left       *Tree
+	Right      *Tree
+}
+
+func SmallerRight(a []int) []int {
+	n := len(a)
+	rv := make([]int, n)
+
+	var root_node Tree
+	var root *Tree = &root_node
+	root.Value = a[n-1]
+	root.NumSmaller = 0
+	root.Left = nil
+	root.Right = nil
+	rv[n-1] = 0
+
+	for i := n - 2; i >= 0; i-- {
+		v := a[i]
+
+		num_smaller := 0
+		var node *Tree = root
+
+		for {
+			if v < node.Value {
+				node.NumSmaller += 1
+				if node.Left == nil {
+					var new_node Tree
+					new_node.Value = v
+					new_node.NumSmaller = 0
+					new_node.Left = nil
+					new_node.Right = nil
+					node.Left = &new_node
+					break
+				} else {
+					node = node.Left
+				}
+			} else {
+				num_smaller += node.NumSmaller
+				if v > node.Value {
+					num_smaller += 1
+				}
+				if node.Right == nil {
+					var new_node Tree
+					new_node.Value = v
+					new_node.NumSmaller = 0
+					new_node.Left = nil
+					new_node.Right = nil
+					node.Right = &new_node
+					break
+				} else {
+					node = node.Right
+				}
+			}
+
+		}
+		rv[i] = num_smaller
+
+	}
+	return rv
+}
+
 func main() {
 	x := []int{1, 2, 3, 4, 5}
 	fmt.Println(ArrayProd(x))

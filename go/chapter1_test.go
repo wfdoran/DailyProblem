@@ -91,3 +91,23 @@ func TestMaxArraySum(t *testing.T) {
 		}
 	}
 }
+
+func TestSmallerRight(t *testing.T) {
+	{
+		in := []int{3, 4, 9, 6, 1}
+		expect := []int{1, 1, 2, 1, 0}
+		out := SmallerRight(in)
+		if !reflect.DeepEqual(expect, out) {
+			t.Error("ArrayProd", in, "=", out, "expect", expect)
+		}
+	}
+
+	{
+		in := []int{1, 1, 1, 1, 1}
+		expect := []int{0, 0, 0, 0, 0}
+		out := SmallerRight(in)
+		if !reflect.DeepEqual(expect, out) {
+			t.Error("ArrayProd", in, "=", out, "expect", expect)
+		}
+	}
+}
