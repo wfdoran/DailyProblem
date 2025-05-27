@@ -60,3 +60,56 @@ func (x *LinkedList[T]) Display() {
 		fmt.Println(n.val)
 	}
 }
+
+func LLFromInt(x int) *LinkedList[int] {
+	a := LinkedListNew[int]()
+
+	for x > 0 {
+		a.Append(x % 10)
+		x /= 10
+	}
+
+	return a
+}
+
+func LLToInt(a *LinkedList[int]) int {
+	rv := 0
+	base := 1
+
+	an := a.start
+	for an != nil {
+		rv += base * an.val
+		base *= 10
+		an = an.next
+	}
+	return rv
+}
+
+func LLAddInts(a *LinkedList[int], b *LinkedList[int]) *LinkedList[int] {
+	c := LinkedListNew[int]()
+
+	carry := 0
+	an := a.start
+	bn := b.start
+
+	for an != nil || bn != nil || carry > 0 {
+		a_value := 0
+		if an != nil {
+			a_value = an.val
+			an = an.next
+		}
+
+		b_value := 0
+		if bn != nil {
+			b_value = bn.val
+			bn = bn.next
+		}
+
+		total := a_value + b_value + carry
+
+		c.Append(total % 10)
+		carry = total / 10
+	}
+
+	return c
+}

@@ -1,16 +1,24 @@
 package chapter3
 
 import (
+	"fmt"
 	"testing"
 )
 
 func TestLLReverse(t *testing.T) {
-	ll := LinkedListNew[int]()
+	a := LinkedListNew[int]()
 
 	for i := range 5 {
-		ll.Append(i)
+		a.Append(i)
 	}
 
-	ll.Reverse()
-	ll.Display()
+	a.Reverse()
+	fmt.Println(LLToInt(a))
+}
+
+func TestLLAddInts(t *testing.T) {
+	a := LLFromInt(99)
+	b := LLFromInt(25)
+	c := LLAddInts(a, b)
+	fmt.Println(LLToInt(c))
 }
