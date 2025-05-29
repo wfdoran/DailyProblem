@@ -113,3 +113,40 @@ func LLAddInts(a *LinkedList[int], b *LinkedList[int]) *LinkedList[int] {
 
 	return c
 }
+
+func SwapNextTwo[T any](a **LinkedListNode[T]) {
+	an := *a
+	if an == nil || an.next == nil {
+		return
+	}
+
+	bn := an.next
+
+	temp := bn.next
+	bn.next = an
+	an.next = temp
+
+	*a = bn
+}
+
+func LLAlternate(a *LinkedList[int]) {
+	curr := &a.start
+	dir := 0
+
+	for {
+		an := *curr
+		if an == nil {
+			break
+		}
+		bn := an.next
+		if bn == nil {
+			break
+		}
+
+		if (dir == 0 && an.val > bn.val) || (dir == 1 && an.val < bn.val) {
+			SwapNextTwo(curr)
+		}
+		curr = &((*curr).next)
+		dir = 1 - dir
+	}
+}

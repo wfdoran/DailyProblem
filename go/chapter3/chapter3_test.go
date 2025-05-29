@@ -22,3 +22,15 @@ func TestLLAddInts(t *testing.T) {
 	c := LLAddInts(a, b)
 	fmt.Println(LLToInt(c))
 }
+
+func TestSwapNextTwo(t *testing.T) {
+	a := LLFromInt(37)
+	SwapNextTwo(&a.start)
+	fmt.Println(LLToInt(a))
+}
+
+func TestLLAlternate(t *testing.T) {
+	a := LLFromInt(54321)
+	LLAlternate(a)
+	fmt.Println(LLToInt(a))
+}
