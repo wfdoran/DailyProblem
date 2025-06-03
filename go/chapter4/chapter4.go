@@ -1,6 +1,9 @@
 package chapater4
 
-import "errors"
+import (
+	"cmp"
+	"errors"
+)
 
 type Stack[T any] struct {
 	stack []T
@@ -37,4 +40,42 @@ func (a *Stack[T]) Peek() (T, error) {
 	} else {
 		return a.stack[a_len-1], nil
 	}
+}
+
+type MaxStack[T cmp.Ordered] struct {
+	vals *Stack[T]
+	maxs *Stack[T]
+}
+
+func MaxStackNew[T cmp.Ordered]() *MaxStack[T] {
+	a := new(MaxStack[T])
+	a.vals = new(Stack[T])
+	a.maxs = new(Stack[T])
+	return a
+}
+
+func (a *MaxStack[T]) Push(val T) {
+	a.vals.Push(val)
+
+	curr, err := a.maxs.Peek()
+	if err != nil || val > curr {
+		a.maxs.Push(val)
+	} else {
+		a.maxs.Push(curr)
+	}
+}
+
+func (a *MaxStack[T]) Pop() (T, error) {
+	val, err := a.vals.Pop()
+	a.maxs.Pop()
+
+	return val, err
+}
+
+func (a *MaxStack[T]) Peek() (T, error) {
+	return a.vals.Peek()
+}
+
+func (a *MaxStack[T]) Max() (T, error) {
+	return a.maxs.Peek()
 }

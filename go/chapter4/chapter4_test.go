@@ -20,4 +20,24 @@ func TestStackPushPop(t *testing.T) {
 			break
 		}
 	}
+	fmt.Println()
+}
+
+func TestMaxStack(t *testing.T) {
+	a := MaxStackNew[int]()
+
+	vals := []int{1, 3, 5, 2, 4}
+	for _, v := range vals {
+		a.Push(v)
+	}
+
+	for {
+		maxv, err := a.Max()
+		if err == nil {
+			fmt.Println(maxv)
+		} else {
+			break
+		}
+		a.Pop()
+	}
 }
