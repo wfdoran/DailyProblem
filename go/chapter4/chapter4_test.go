@@ -41,3 +41,17 @@ func TestMaxStack(t *testing.T) {
 		a.Pop()
 	}
 }
+
+func TestIsBalanced(t *testing.T) {
+	if !IsBalanced("([])[]({})") {
+		t.Error("Ex 1")
+	}
+
+	if IsBalanced("([()]") {
+		t.Error("Ex 2")
+	}
+
+	if IsBalanced("((()") {
+		t.Error("Ex 3")
+	}
+}

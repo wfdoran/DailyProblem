@@ -18,6 +18,10 @@ func (a *Stack[T]) Push(val T) {
 	a.stack = append(a.stack, val)
 }
 
+func (a *Stack[T]) Length() int {
+	return len(a.stack)
+}
+
 func (a *Stack[T]) Pop() (T, error) {
 	a_len := len(a.stack)
 
@@ -78,4 +82,31 @@ func (a *MaxStack[T]) Peek() (T, error) {
 
 func (a *MaxStack[T]) Max() (T, error) {
 	return a.maxs.Peek()
+}
+
+func IsBalanced(s string) bool {
+	a := StackNew[rune]()
+	partner := map[rune]rune{
+		')': '(',
+		'}': '{',
+		']': '[',
+	}
+
+	for _, v := range s {
+		if v == '(' || v == '{' || v == '[' {
+			a.Push(v)
+		}
+
+		if v == ')' || v == '}' || v == ']' {
+			r, err := a.Pop()
+			if err != nil {
+				return false
+			}
+
+			if r != partner[v] {
+				return false
+			}
+		}
+	}
+	return a.Length() == 0
 }
