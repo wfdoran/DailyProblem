@@ -34,3 +34,45 @@ func TestBestCut(t *testing.T) {
 	fmt.Println(BestCut(b))
 
 }
+
+func TestSparseArray(t *testing.T) {
+	a := SparseArrayInit[int](10)
+
+	a.Set(5, 25)
+	a.Set(7, 49)
+
+	err := a.Set(25, 4000)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	{
+		val, err := a.Get(7)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Println(val)
+		}
+	}
+
+	{
+		val, err := a.Get(3)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Println(val)
+		}
+	}
+
+	a.SetDefault(-1)
+
+	{
+		val, err := a.Get(3)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Println(val)
+		}
+	}
+
+}

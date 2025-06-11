@@ -163,3 +163,47 @@ func BestCut(bricks [][]int) int {
 	}
 	return max_cut
 }
+
+type SparseArray[T any] struct {
+	size         int
+	m            map[int]T
+	have_default bool
+	default_val  T
+}
+
+func SparseArrayInit[T any](size int) *SparseArray[T] {
+	out := new(SparseArray[T])
+	out.size = size
+	out.m = make(map[int]T)
+	out.have_default = false
+	return out
+}
+
+func (a *SparseArray[T]) SetDefault(val T) {
+	a.have_default = true
+	a.default_val = val
+}
+
+func (a *SparseArray[T]) Set(i int, val T) error {
+	if i < 0 || i >= a.size {
+		return errors.New("invalid i")
+	}
+	a.m[i] = val
+	return nil
+}
+
+func (a *SparseArray[T]) Get(i int) (T, error) {
+	var bogus T
+	if i < 0 || i >= a.size {
+		return bogus, errors.New("invalid i")
+	}
+
+	val, ok := a.m[i]
+	if ok {
+		return val, nil
+	}
+	if a.have_default {
+		return a.default_val, nil
+	}
+	return bogus, errors.New("no value for this i")
+}
