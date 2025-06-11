@@ -1,6 +1,9 @@
 package chapter5
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type DLLNode[T any] struct {
 	value T
@@ -126,4 +129,37 @@ func (self *LRUCache[T]) Get(key int) (T, error) {
 		var bogus T
 		return bogus, errors.New("key not in cache")
 	}
+}
+
+func BestCut(bricks [][]int) int {
+	m := make(map[int]int)
+
+	row_len := -1
+	for _, row := range bricks {
+		pos := 0
+
+		for _, a := range row {
+			pos += a
+			m[pos] += 1
+		}
+
+		if row_len == -1 {
+			row_len = pos
+		} else {
+			if row_len != pos {
+				fmt.Println("Errr!!!!")
+			}
+		}
+	}
+
+	max_cut := 0
+	max_val := 0
+
+	for key, val := range m {
+		if key != row_len && val > max_val {
+			max_cut = key
+			max_val = val
+		}
+	}
+	return max_cut
 }

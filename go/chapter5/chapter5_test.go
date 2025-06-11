@@ -27,3 +27,10 @@ func TestLRUCache(t *testing.T) {
 	_, err = lru.Get(3)
 	fmt.Println(err)
 }
+
+func TestBestCut(t *testing.T) {
+	b := [][]int{{3, 5, 1, 1}, {2, 3, 3, 2}, {5, 5}, {4, 4, 2}, {1, 3, 3, 3}, {1, 1, 6, 1, 1}}
+
+	fmt.Println(BestCut(b))
+
+}
