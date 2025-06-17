@@ -41,6 +41,66 @@ func (self *TreeNode[K, T]) UpdateHeight() {
 	}
 }
 
+func (self *TreeNode[K, T]) Balance() *TreeNode[K, T] {
+	left_height := 0
+	if self.left != nil {
+		left_height = self.left.height
+	}
+	right_height := 0
+	if self.right != nil {
+		right_height = self.right.height
+	}
+
+	/*             self                        x
+	              /    \                      /  \
+	             x       C                   A   self
+				/ \                              /   \
+			   A	B		                    B     C
+	*/
+
+	if left_height > right_height+1 {
+		x := self.left
+		a := x.left
+		b := x.right
+		c := self.right
+
+		x.left = a
+		x.right = self
+		self.left = b
+		self.right = c
+
+		self.UpdateHeight()
+		x.UpdateHeight()
+		return x
+	}
+
+	/*                 self                       x
+		              /    \                     /  \
+					A       x                  self  C
+					       / \                 /  \
+	                      B   C               A    B
+
+	*/
+
+	if left_height < right_height-1 {
+		x := self.right
+		a := self.left
+		b := x.left
+		c := x.right
+
+		x.left = self
+		x.right = c
+		self.left = a
+		self.right = b
+
+		self.UpdateHeight()
+		x.UpdateHeight()
+		return x
+	}
+
+	return self
+}
+
 func (self *TreeNode[K, T]) Insert(key K, data T) *TreeNode[K, T] {
 	if self == nil {
 		return NewTreeNode(key, data)
@@ -54,7 +114,7 @@ func (self *TreeNode[K, T]) Insert(key K, data T) *TreeNode[K, T] {
 
 	self.UpdateHeight()
 
-	return self
+	return self.Balance()
 }
 
 func (self *TreeNode[K, T]) Find(key K) (bool, T) {
@@ -75,7 +135,7 @@ func (self *TreeNode[K, T]) Find(key K) (bool, T) {
 }
 
 func (self *TreeNode[K, T]) String() string {
-	rv := ""
+	rv := "( "
 
 	if self.left != nil {
 		rv += self.left.String()
@@ -87,6 +147,7 @@ func (self *TreeNode[K, T]) String() string {
 		rv += " "
 		rv += self.right.String()
 	}
+	rv += " )"
 
 	return rv
 }
