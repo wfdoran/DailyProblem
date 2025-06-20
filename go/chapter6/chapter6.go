@@ -106,7 +106,9 @@ func (self *TreeNode[K, T]) Insert(key K, data T) *TreeNode[K, T] {
 		return NewTreeNode(key, data)
 	}
 
-	if key < self.key {
+	if key == self.key {
+		self.data = data
+	} else if key < self.key {
 		self.left = self.left.Insert(key, data)
 	} else {
 		self.right = self.right.Insert(key, data)
@@ -150,4 +152,69 @@ func (self *TreeNode[K, T]) String() string {
 	rv += " )"
 
 	return rv
+}
+
+func (self *TreeNode[K, T]) Remove(key K) (bool, T, *TreeNode[K, T]) {
+	if self == nil {
+		var bogus T
+		return false, bogus, self
+	}
+
+	if key < self.key {
+		ok, data, update := self.left.Remove(key)
+		self.left = update
+		self.UpdateHeight()
+		ret := self.Balance()
+		return ok, data, ret
+	}
+
+	if key > self.key {
+		ok, data, update := self.right.Remove(key)
+		self.right = update
+		self.UpdateHeight()
+		ret := self.Balance()
+		return ok, data, ret
+	}
+
+	if self.right == nil {
+		return true, self.data, self.left
+	}
+
+	if self.left == nil {
+		return true, self.data, self.right
+	}
+
+	if self.right.left == nil {
+		self.right.left = self.left
+		self.right.UpdateHeight()
+		ret := self.right.Balance()
+		return true, self.data, ret
+	}
+
+	if self.left.right == nil {
+		self.left.right = self.right
+		self.left.UpdateHeight()
+		ret := self.right.Balance()
+		return true, self.data, ret
+	}
+
+	succ := self.right
+	for ; succ.left != nil; succ = succ.left {
+	}
+
+	temp_key := self.key
+	self.key = succ.key
+	succ.key = temp_key
+
+	temp_data := self.data
+	self.data = succ.data
+	succ.data = temp_data
+
+	ok, data, right_ret := self.right.Remove(key)
+	self.right = right_ret
+
+	self.UpdateHeight()
+	ret := self.Balance()
+
+	return ok, data, ret
 }

@@ -30,3 +30,34 @@ func TestBST2(t *testing.T) {
 	// fmt.Println(root)
 	fmt.Println(root.height)
 }
+
+func TestBSTRemove(t *testing.T) {
+	max := 30
+
+	root := NewTreeNode[int, int](0, 0)
+	for i := range max {
+		x := i + 1
+		d := x * x
+		root = root.Insert(x, d)
+	}
+
+	for i := range max + 1 {
+		// fmt.Println(root)
+		ok, d, ret := root.Remove(i)
+		if !ok {
+			t.Error("AAA")
+		}
+		if d != i*i {
+			t.Error("BBB")
+		}
+		root = ret
+
+		// fmt.Println(i, ok, d)
+		// fmt.Println(root)
+
+		root = root.Insert(i, d)
+		// fmt.Println(root)
+		// fmt.Println()
+	}
+
+}
