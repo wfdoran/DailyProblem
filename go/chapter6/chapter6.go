@@ -50,6 +50,11 @@ func (self *TreeNode[K, T]) Balance() *TreeNode[K, T] {
 	if self.right != nil {
 		right_height = self.right.height
 	}
+	if left_height > right_height {
+		self.height = left_height + 1
+	} else {
+		self.height = right_height + 1
+	}
 
 	/*             self                        x
 	              /    \                      /  \
@@ -113,9 +118,6 @@ func (self *TreeNode[K, T]) Insert(key K, data T) *TreeNode[K, T] {
 	} else {
 		self.right = self.right.Insert(key, data)
 	}
-
-	self.UpdateHeight()
-
 	return self.Balance()
 }
 
@@ -163,7 +165,6 @@ func (self *TreeNode[K, T]) Remove(key K) (bool, T, *TreeNode[K, T]) {
 	if key < self.key {
 		ok, data, update := self.left.Remove(key)
 		self.left = update
-		self.UpdateHeight()
 		ret := self.Balance()
 		return ok, data, ret
 	}
@@ -171,7 +172,6 @@ func (self *TreeNode[K, T]) Remove(key K) (bool, T, *TreeNode[K, T]) {
 	if key > self.key {
 		ok, data, update := self.right.Remove(key)
 		self.right = update
-		self.UpdateHeight()
 		ret := self.Balance()
 		return ok, data, ret
 	}
@@ -186,14 +186,12 @@ func (self *TreeNode[K, T]) Remove(key K) (bool, T, *TreeNode[K, T]) {
 
 	if self.right.left == nil {
 		self.right.left = self.left
-		self.right.UpdateHeight()
 		ret := self.right.Balance()
 		return true, self.data, ret
 	}
 
 	if self.left.right == nil {
 		self.left.right = self.right
-		self.left.UpdateHeight()
 		ret := self.right.Balance()
 		return true, self.data, ret
 	}
@@ -213,7 +211,6 @@ func (self *TreeNode[K, T]) Remove(key K) (bool, T, *TreeNode[K, T]) {
 	ok, data, right_ret := self.right.Remove(key)
 	self.right = right_ret
 
-	self.UpdateHeight()
 	ret := self.Balance()
 
 	return ok, data, ret
