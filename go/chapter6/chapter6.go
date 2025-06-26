@@ -13,6 +13,11 @@ type TreeNode[K cmp.Ordered, T any] struct {
 	right  *TreeNode[K, T]
 }
 
+type NodeData[K cmp.Ordered, T any] struct {
+	key  K
+	data T
+}
+
 func NewTreeNode[K cmp.Ordered, T any](key K, data T) *TreeNode[K, T] {
 	n := new(TreeNode[K, T])
 	n.key = key
@@ -214,4 +219,58 @@ func (self *TreeNode[K, T]) Remove(key K) (bool, T, *TreeNode[K, T]) {
 	ret := self.Balance()
 
 	return ok, data, ret
+}
+
+func (self TreeNode[K, T]) FindFloor(key K) (bool, K, T) {
+	if self.key == key {
+		return true, self.key, self.data
+	}
+
+	if self.key > key {
+		if self.left == nil {
+			var bogus_key K
+			var bogus_data T
+			return false, bogus_key, bogus_data
+		} else {
+			return self.left.FindFloor(key)
+		}
+	}
+
+	if self.key < key {
+		if self.right == nil {
+			return true, self.key, self.data
+		} else {
+			ok, floor, data := self.right.FindFloor(key)
+			if ok {
+				return true, floor, data
+			} else {
+				return true, self.key, self.data
+			}
+		}
+	}
+
+	// cannot happen
+	var bogus_key K
+	var bogus_data T
+	return false, bogus_key, bogus_data
+}
+
+func (self *TreeNode[K, T]) _walk(ch chan NodeData[K, T]) {
+	if self != nil {
+		self.left._walk(ch)
+
+		x := NodeData[K, T]{key: self.key, data: self.data}
+		ch <- x
+
+		self.right._walk(ch)
+	}
+}
+
+func (self TreeNode[K, T]) Walk() chan NodeData[K, T] {
+	ch := make(chan NodeData[K, T])
+	go func() {
+		self._walk(ch)
+		close(ch)
+	}()
+	return ch
 }
