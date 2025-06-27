@@ -249,6 +249,39 @@ func (self TreeNode[K, T]) FindFloor(key K) (bool, K, T) {
 		}
 	}
 
+	var bogus_key K
+	var bogus_data T
+	return false, bogus_key, bogus_data
+}
+
+func (self TreeNode[K, T]) FindCeil(key K) (bool, K, T) {
+	if self.key == key {
+		return true, self.key, self.data
+	}
+
+	if self.key < key {
+		if self.right == nil {
+			var bogus_key K
+			var bogus_data T
+			return false, bogus_key, bogus_data
+		} else {
+			return self.right.FindCeil(key)
+		}
+	}
+
+	if self.key > key {
+		if self.left == nil {
+			return true, self.key, self.data
+		} else {
+			ok, floor, data := self.left.FindCeil(key)
+			if ok {
+				return true, floor, data
+			} else {
+				return true, self.key, self.data
+			}
+		}
+	}
+
 	// cannot happen
 	var bogus_key K
 	var bogus_data T

@@ -6,7 +6,7 @@ import (
 )
 
 func TestBST(t *testing.T) {
-	root := NewTreeNode[int, int](50, 0)
+	var root *TreeNode[int, int] = nil
 
 	root = root.Insert(30, 0)
 	root = root.Insert(20, 0)
@@ -17,10 +17,11 @@ func TestBST(t *testing.T) {
 
 	fmt.Println(root)
 	fmt.Println(root.height)
+	fmt.Println("======================================")
 }
 
 func TestBST2(t *testing.T) {
-	root := NewTreeNode[int, int](0, 0)
+	var root *TreeNode[int, int] = nil
 
 	for i := range 1000 {
 		x := i + 1
@@ -29,19 +30,17 @@ func TestBST2(t *testing.T) {
 
 	// fmt.Println(root)
 	fmt.Println(root.height)
+	fmt.Println("======================================")
 }
 
 func TestBSTRemove(t *testing.T) {
+	var root *TreeNode[int, int] = nil
 	max := 30
-
-	root := NewTreeNode[int, int](0, 0)
 	for i := range max {
-		x := i + 1
-		d := x * x
-		root = root.Insert(x, d)
+		root = root.Insert(i, i*i)
 	}
 
-	for i := range max + 1 {
+	for i := range max {
 		// fmt.Println(root)
 		ok, d, ret := root.Remove(i)
 		if !ok {
@@ -51,20 +50,14 @@ func TestBSTRemove(t *testing.T) {
 			t.Error("BBB")
 		}
 		root = ret
-
-		// fmt.Println(i, ok, d)
-		// fmt.Println(root)
-
 		root = root.Insert(i, d)
-		// fmt.Println(root)
-		// fmt.Println()
 	}
-
+	fmt.Println("======================================")
 }
 
 func TestBST3(t *testing.T) {
 	n := 2000
-	root := NewTreeNode[int, int](0, 0)
+	var root *TreeNode[int, int] = nil
 
 	for i := range n {
 		x := 1 + ((3 * i) % n)
@@ -78,7 +71,7 @@ func TestBST3(t *testing.T) {
 	}
 
 	fmt.Println(root.height)
-
+	fmt.Println("======================================")
 }
 
 func TestBST4(t *testing.T) {
@@ -97,6 +90,10 @@ func TestBST4(t *testing.T) {
 		ok, floor, data := root.FindFloor(i)
 		fmt.Println(i, ok, floor, data)
 	}
+	for i := range 2*n + 1 {
+		ok, ceil, data := root.FindCeil(i)
+		fmt.Println(i, ok, ceil, data)
+	}
 	fmt.Println("======================================")
 }
 
@@ -113,5 +110,5 @@ func TestBST5(t *testing.T) {
 	for x := range root.Walk() {
 		fmt.Println(x.key, x.data)
 	}
-
+	fmt.Println("======================================")
 }
