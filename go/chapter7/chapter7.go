@@ -56,3 +56,17 @@ func TrieRoot() *TrieNode {
 	n.root = true
 	return n
 }
+
+func (node TrieNode) Find(s string) bool {
+	curr := node
+
+	for _, r := range s {
+		next, ok := curr.m[r]
+		if !ok {
+			return false
+		}
+		curr = *next
+	}
+
+	return curr.end
+}
