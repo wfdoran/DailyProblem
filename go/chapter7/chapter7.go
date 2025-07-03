@@ -46,6 +46,22 @@ func (node TrieNode) _walk(prefix string, curr string) string {
 	return curr
 }
 
+func (node *TrieNode) _walk2(s string) []string {
+	var rv []string
+
+	if node.end {
+		rv = append(rv, s)
+	}
+
+	for ch, sub_node := range node.m {
+		sub_s := s + string(ch)
+		q := sub_node._walk2(sub_s)
+
+		rv = append(rv, q...)
+	}
+	return rv
+}
+
 func (node *TrieNode) String() string {
 	return node._walk("", "")
 }
@@ -69,4 +85,18 @@ func (node TrieNode) Find(s string) bool {
 	}
 
 	return curr.end
+}
+
+func (node *TrieNode) AutoComplete(s string) []string {
+	curr := node
+
+	for _, c := range s {
+		next, ok := curr.m[c]
+		if !ok {
+			return nil
+		}
+		curr = next
+	}
+
+	return curr._walk2(s)
 }

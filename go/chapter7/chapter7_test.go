@@ -30,3 +30,17 @@ func TestTrie2(t *testing.T) {
 	fmt.Println(root.Find("do"))
 	fmt.Println(root.Find("cata"))
 }
+
+func TestTrie3(t *testing.T) {
+	root := TrieRoot()
+
+	root.Insert("dog")
+	root.Insert("deer")
+	root.Insert("deal")
+	root.Insert("ant")
+	root.Insert("anter")
+
+	fmt.Println(root.AutoComplete("de"))
+	fmt.Println(root.AutoComplete("ant"))
+
+}
