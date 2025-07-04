@@ -1,13 +1,18 @@
 package chapter7
 
 type TrieNode struct {
-	r    rune
-	end  bool
-	root bool
-	m    map[rune](*TrieNode)
+	r     rune
+	end   bool
+	root  bool
+	value int
+	m     map[rune](*TrieNode)
 }
 
 func (node *TrieNode) Insert(s string) {
+	node.InsertValue(s, 0)
+}
+
+func (node *TrieNode) InsertValue(s string, value int) {
 	curr := node
 
 	for _, r := range s {
@@ -20,6 +25,7 @@ func (node *TrieNode) Insert(s string) {
 			next.r = r
 			next.root = false
 			next.end = false
+			next.value = 0
 			next.m = make(map[rune]*TrieNode)
 
 			curr.m[r] = next
@@ -27,6 +33,7 @@ func (node *TrieNode) Insert(s string) {
 		}
 	}
 	curr.end = true
+	curr.value = value
 }
 
 func (node TrieNode) _walk(prefix string, curr string) string {
@@ -62,6 +69,19 @@ func (node *TrieNode) _walk2(s string) []string {
 	return rv
 }
 
+func (node *TrieNode) _walk3() int {
+	if node == nil {
+		return 0
+	}
+
+	rv := node.value
+
+	for _, sub_node := range node.m {
+		rv += sub_node._walk3()
+	}
+	return rv
+}
+
 func (node *TrieNode) String() string {
 	return node._walk("", "")
 }
@@ -70,6 +90,7 @@ func TrieRoot() *TrieNode {
 	n := new(TrieNode)
 	n.m = make(map[rune]*TrieNode)
 	n.root = true
+	n.value = 0
 	return n
 }
 
@@ -99,4 +120,18 @@ func (node *TrieNode) AutoComplete(s string) []string {
 	}
 
 	return curr._walk2(s)
+}
+
+func (node *TrieNode) Sum(s string) int {
+	curr := node
+
+	for _, c := range s {
+		next, ok := curr.m[c]
+		if !ok {
+			return 0
+		}
+		curr = next
+	}
+
+	return curr._walk3()
 }

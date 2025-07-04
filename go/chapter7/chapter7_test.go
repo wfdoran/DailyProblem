@@ -44,3 +44,15 @@ func TestTrie3(t *testing.T) {
 	fmt.Println(root.AutoComplete("ant"))
 
 }
+
+func TestTrie4(t *testing.T) {
+	root := TrieRoot()
+
+	root.InsertValue("dog", 1)
+	root.InsertValue("donut", 2)
+	root.InsertValue("delay", 4)
+
+	fmt.Println(root.Sum("d"))
+	fmt.Println(root.Sum("do"))
+	fmt.Println(root.Sum("doo"))
+}
