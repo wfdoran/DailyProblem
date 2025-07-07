@@ -56,3 +56,9 @@ func TestTrie4(t *testing.T) {
 	fmt.Println(root.Sum("do"))
 	fmt.Println(root.Sum("doo"))
 }
+
+func TestTrie5(t *testing.T) {
+	a := []uint{4, 6, 7}
+	fmt.Println("max = ", MaxXOR(a))
+
+}

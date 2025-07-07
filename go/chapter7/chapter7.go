@@ -135,3 +135,57 @@ func (node *TrieNode) Sum(s string) int {
 
 	return curr._walk3()
 }
+
+func int2string(x uint) string {
+	rv := ""
+
+	for i := range 32 {
+		if (x>>i)&1 == 0 {
+			rv = "0" + rv
+		} else {
+			rv = "1" + rv
+		}
+	}
+	return rv
+}
+
+func (node *TrieNode) _max_xor() (uint, int) {
+	sub0, ok0 := node.m['0']
+	sub1, ok1 := node.m['1']
+
+	if !ok0 && !ok1 {
+		return 0, 1
+	}
+
+	if !ok1 {
+		v, depth := sub0._max_xor()
+		return v, depth + 1
+	}
+
+	if !ok0 {
+		v, depth := sub1._max_xor()
+		return v, depth + 1
+	}
+
+	v0, depth0 := sub0._max_xor()
+	v1, depth1 := sub1._max_xor()
+
+	if depth0 != depth1 {
+		panic("what!")
+	}
+
+	if v0 > v1 {
+		return (1 << depth0) ^ v0, depth0 + 1
+	}
+	return (1 << depth1) ^ v1, depth1 + 1
+}
+
+func MaxXOR(a []uint) uint {
+	node := TrieRoot()
+	for _, x := range a {
+		node.Insert(int2string(x))
+	}
+
+	rv, _ := node._max_xor()
+	return rv
+}
