@@ -59,3 +59,25 @@ func HeapDelete[T cmp.Ordered](a []T) (T, []T) {
 	HeapDown(a, 0)
 	return rv, a
 }
+
+func RegularNumbers(n int) chan int {
+	ch := make(chan int)
+
+	go func() {
+		var a []int
+		a = HeapInsert[int](a, 1)
+
+		for range n {
+			var v int
+			v, a = HeapDelete(a)
+			ch <- v
+
+			for _, mult := range []int{2, 3, 5} {
+				a = HeapInsert[int](a, v*mult)
+			}
+		}
+		close(ch)
+	}()
+
+	return ch
+}

@@ -22,3 +22,9 @@ func TestHeap1(t *testing.T) {
 		fmt.Println(a, min_val)
 	}
 }
+
+func TestRegular(t *testing.T) {
+	for i := range RegularNumbers(10) {
+		fmt.Println(i)
+	}
+}
