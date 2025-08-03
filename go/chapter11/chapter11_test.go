@@ -40,3 +40,36 @@ func TestUnionFind(t *testing.T) {
 		fmt.Println(i, uf.GetClass(i))
 	}
 }
+
+func TestBloomFilter(t *testing.T) {
+	filter := BloomFilterInit(1024)
+
+	v := uint64(1)
+	for range 100 {
+		v *= uint64(0x555555555555555)
+		v += uint64(10)
+
+		filter.Add(v)
+	}
+
+	fmt.Println("========================")
+	v = uint64(1)
+	for range 10 {
+		for range 10 {
+			v *= uint64(0x555555555555555)
+			v += uint64(10)
+		}
+
+		fmt.Print(filter.Check(v), " ")
+	}
+	fmt.Println()
+
+	v = uint64(2)
+	for range 10 {
+		v *= uint64(0x555555555555555)
+		v += uint64(10)
+
+		fmt.Print(filter.Check(v), " ")
+	}
+	fmt.Println()
+}

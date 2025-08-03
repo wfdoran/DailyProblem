@@ -76,3 +76,62 @@ func (uf *UnionFind) Finalize() {
 		uf.GetClass(i)
 	}
 }
+
+type BloomFilter struct {
+	num_entries uint64
+	table       []uint64
+	hash_mult   []uint64
+	hash_add    []uint64
+}
+
+func BloomFilterInit(num_entries uint64) *BloomFilter {
+	x := new(BloomFilter)
+	x.num_entries = num_entries
+
+	table_num_words := (num_entries + 63) / 64
+	x.table = make([]uint64, table_num_words)
+
+	num_hash := 3
+	x.hash_mult = make([]uint64, num_hash)
+	x.hash_add = make([]uint64, num_hash)
+
+	for i := range num_hash {
+		x.hash_add[i] = uint64(i + 1)
+		x.hash_mult[i] = uint64(2*i + 3)
+	}
+
+	return x
+}
+
+func (filter *BloomFilter) Add(v uint64) {
+	num_hash := len(filter.hash_add)
+	for i := range num_hash {
+		e := (filter.hash_mult[i] * (filter.hash_add[i] + v)) % filter.num_entries
+
+		word := e / 64
+		bit := e & 63
+
+		// fmt.Println("AAA", word, bit)
+
+		filter.table[word] |= uint64(1) << bit
+	}
+}
+
+func (filter BloomFilter) Check(v uint64) bool {
+	num_hash := len(filter.hash_add)
+	for i := range num_hash {
+		e := (filter.hash_mult[i] * (filter.hash_add[i] + v)) % filter.num_entries
+
+		word := e / 64
+		bit := e & 63
+
+		// fmt.Println("BBB", word, bit)
+
+		q := (filter.table[word] >> bit) & uint64(1)
+		if q == 0 {
+			return false
+		}
+	}
+
+	return true
+}
