@@ -11,3 +11,21 @@ func TestTowerOfHanoi(t *testing.T) {
 	}
 
 }
+
+func TestRegEx(t *testing.T) {
+	if !RegEx("ra.", "ray") {
+		t.Errorf("1")
+	}
+	if !RegEx("*at", "chat") {
+		t.Errorf("2")
+	}
+	if RegEx("*z", "hello") {
+		t.Errorf("3")
+	}
+	if RegEx("*z.", "tubz") {
+		t.Errorf("4")
+	}
+	if !RegEx("*z*", "tubz") {
+		t.Errorf("5")
+	}
+}

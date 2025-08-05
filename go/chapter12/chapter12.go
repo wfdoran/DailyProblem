@@ -22,3 +22,36 @@ func TowerOfHanoi(n int, src int, dst int) chan [2]int {
 
 	return ch
 }
+
+func RegEx(r string, s string) bool {
+	r_len := len(r)
+	s_len := len(s)
+
+	if r_len == 0 {
+		return s_len == 0
+	}
+
+	r_head := r[0]
+	r_tail := r[1:]
+
+	if r_head == '*' {
+		for i := range s_len + 1 {
+			s_tail := s[i:]
+			if RegEx(r_tail, s_tail) {
+				return true
+			}
+		}
+	}
+
+	if s_len == 0 {
+		return false
+	}
+
+	s_head := s[0]
+	s_tail := s[1:]
+
+	if r_head != '.' && r_head != s_head {
+		return false
+	}
+	return RegEx(r_tail, s_tail)
+}
