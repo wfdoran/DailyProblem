@@ -29,3 +29,9 @@ func TestRegEx(t *testing.T) {
 		t.Errorf("5")
 	}
 }
+
+func TestArrayMinMax(t *testing.T) {
+	a := []int{4, 2, 7, 5, -1, 3, 6}
+	fmt.Println(ArrayMinMax(a))
+
+}

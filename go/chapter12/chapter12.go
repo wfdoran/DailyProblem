@@ -55,3 +55,37 @@ func RegEx(r string, s string) bool {
 	}
 	return RegEx(r_tail, s_tail)
 }
+
+func ArrayMinMax(a []int) (int, int) {
+	n := len(a)
+
+	if n == 1 {
+		return a[0], a[0]
+	}
+
+	if n == 2 {
+		if a[0] < a[1] {
+			return a[0], a[1]
+		} else {
+			return a[1], a[0]
+		}
+	}
+
+	m := n / 2
+	min1, max1 := ArrayMinMax(a[:m])
+	min2, max2 := ArrayMinMax(a[m:])
+
+	var min3, max3 int
+	if min1 < min2 {
+		min3 = min1
+	} else {
+		min3 = min2
+	}
+
+	if max1 > max2 {
+		max3 = max1
+	} else {
+		max3 = max2
+	}
+	return min3, max3
+}
