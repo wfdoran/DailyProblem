@@ -55,6 +55,14 @@ func (x *LinkedList[T]) Reverse() {
 	}
 }
 
+func (x LinkedList[T]) Length() int {
+	rv := 0
+	for n := x.start; n != nil; n = n.next {
+		rv++
+	}
+	return rv
+}
+
 func (x *LinkedList[T]) Display() {
 	for n := x.start; n != nil; n = n.next {
 		fmt.Println(n.val)

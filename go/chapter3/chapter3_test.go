@@ -34,3 +34,14 @@ func TestLLAlternate(t *testing.T) {
 	LLAlternate(a)
 	fmt.Println(LLToInt(a))
 }
+
+func TestLLLength(t *testing.T) {
+	{
+		a := LLFromInt(123456)
+		expect := 6
+		result := a.Length()
+		if result != expect {
+			t.Error("LL Length: result = ", result, "expect = ", expect)
+		}
+	}
+}

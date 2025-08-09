@@ -1,7 +1,9 @@
 package DailyPuzzle
 
 import (
+	"fmt"
 	"reflect"
+	"sort"
 )
 
 func AnagramIndices(w string, s string) []int {
@@ -36,6 +38,41 @@ func AnagramIndices(w string, s string) []int {
 			}
 		}
 	}
+
+	return rv
+}
+
+func StringReverse(s string) string {
+	ss := []rune(s)
+	for i, j := 0, len(ss)-1; i < j; i, j = i+1, j-1 {
+		ss[i], ss[j] = ss[j], ss[i]
+	}
+	return string(ss)
+}
+
+func PalendromePairs(ss []string) [][2]int {
+	var a []string
+	var b []string
+	idx := make(map[string]int)
+
+	for i, s := range ss {
+		a = append(a, s)
+		b = append(b, StringReverse(s))
+		idx[s] = i
+	}
+
+	sort.Strings(a)
+	sort.Strings(b)
+
+	for i, s := range b {
+		b[i] = StringReverse(s)
+	}
+
+	fmt.Println(a)
+	fmt.Println(b)
+	fmt.Println(idx)
+
+	var rv [][2]int
 
 	return rv
 }

@@ -110,3 +110,60 @@ func IsBalanced(s string) bool {
 	}
 	return a.Length() == 0
 }
+
+type Queue[T any] struct {
+	queue []T
+}
+
+func QueueNew[T any]() *Queue[T] {
+	a := new(Queue[T])
+	return a
+}
+
+func (a *Queue[T]) Enqueue(val T) {
+	a.queue = append(a.queue, val)
+}
+
+func (a *Queue[T]) Length() int {
+	return len(a.queue)
+}
+
+func (a *Queue[T]) Dequeue() (T, error) {
+	if a.Length() == 0 {
+		var temp T
+		return temp, errors.New("Queue is empty")
+	}
+
+	rv := a.queue[0]
+	a.queue = a.queue[1:]
+	return rv, nil
+}
+
+func MaxSubarray(a []int, k int) int {
+	n := len(a)
+
+	if n < k {
+		return 0
+	}
+
+	q := QueueNew[int]()
+	sum := 0
+	for _, v := range a[:k] {
+		sum += v
+		q.Enqueue(v)
+	}
+
+	best := sum
+
+	for _, v := range a[k:] {
+		old, _ := q.Dequeue()
+		sum += v - old
+		if sum > best {
+			best = sum
+		}
+		q.Enqueue(v)
+	}
+
+	return best
+
+}

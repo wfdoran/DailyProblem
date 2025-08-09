@@ -55,3 +55,14 @@ func TestIsBalanced(t *testing.T) {
 		t.Error("Ex 3")
 	}
 }
+
+func TestMaxSubarray(t *testing.T) {
+	a := []int{10, 5, 2, 7, 8, 7}
+
+	result = MaxSubarray(a, 3)
+	expect = 10
+	if result != expect {
+		t.Error("result = ", result, "expect")
+	}
+
+}
