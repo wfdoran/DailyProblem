@@ -10,3 +10,11 @@ func TestNumClimbs(t *testing.T) {
 		fmt.Println(NumClimbs(i))
 	}
 }
+
+func TestDecodeCount(t *testing.T) {
+	fmt.Println(DecodeCount("111"))
+	fmt.Println(DecodeCount("101"))
+	fmt.Println(DecodeCount("131"))
+	fmt.Println(DecodeCount("123711202231138152915281327239123"))
+
+}
