@@ -15,3 +15,13 @@ func TestFlightItinerary(t *testing.T) {
 	result := FlightItinerary(f, "YUL")
 	fmt.Println(result)
 }
+
+func TestAndroidCount(t *testing.T) {
+	sum := 0
+	for n := 1; n <= 9; n++ {
+		x := AndroidCount(n)
+		fmt.Println(n, x)
+		sum += x
+	}
+	fmt.Println(sum)
+}
