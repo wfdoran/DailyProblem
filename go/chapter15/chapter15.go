@@ -15,3 +15,29 @@ func DutchFlagSort(a []rune) {
 		}
 	}
 }
+
+func reverse(a []int, i, j int) {
+	ii := i
+	jj := j
+
+	for ii < jj {
+		a[ii], a[jj] = a[jj], a[ii]
+		ii++
+		jj--
+	}
+}
+
+func PancakeSort(a []int) {
+	n := len(a)
+
+	for i := range n - 1 {
+		min_idx := i
+		for j := i + 1; j < n; j++ {
+			if a[j] < a[min_idx] {
+				min_idx = j
+			}
+		}
+
+		reverse(a, i, min_idx)
+	}
+}
