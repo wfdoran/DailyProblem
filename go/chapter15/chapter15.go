@@ -41,3 +41,35 @@ func PancakeSort(a []int) {
 		reverse(a, i, min_idx)
 	}
 }
+
+func RadixSort(a []uint32) {
+	n := len(a)
+	b := make([]uint32, n)
+
+	from := a
+	to := b
+
+	for shift := 0; shift <= 24; shift += 8 {
+		var count [256]int
+
+		for i := range n {
+			idx := (from[i] >> shift) & 0xff
+			count[idx]++
+		}
+
+		var offset [256]int
+		offset[0] = 0
+
+		for idx := 1; idx < 256; idx++ {
+			offset[idx] = offset[idx-1] + count[idx-1]
+		}
+
+		for i := range n {
+			idx := (from[i] >> shift) & 0xff
+			to[offset[idx]] = from[i]
+			offset[idx]++
+		}
+
+		to, from = from, to
+	}
+}
