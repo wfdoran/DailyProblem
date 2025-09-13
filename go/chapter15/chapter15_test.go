@@ -33,3 +33,28 @@ func TestRadixSort(t *testing.T) {
 		}
 	}
 }
+
+func TestFindInSorted(t *testing.T) {
+	a := []int{1, 2, 3, 5, 6, 7}
+
+	fmt.Println(FindInSorted(a, 1))
+	fmt.Println(FindInSorted(a, 4))
+	fmt.Println(FindInSorted(a, 6))
+	fmt.Println(FindInSorted(a, 7))
+}
+
+func TestFindSlow(t *testing.T) {
+	a := []int{1, 2, 3, 5, 6, 7}
+
+	fmt.Println(FindSlow(a, 1))
+	fmt.Println(FindSlow(a, 4))
+	fmt.Println(FindSlow(a, 6))
+	fmt.Println(FindSlow(a, 7))
+}
+
+func TestFindInRotated(t *testing.T) {
+	a := []int{18, 25, 2, 8, 10, 13}
+
+	fmt.Println(FindInRotated(a, 8))
+	fmt.Println(FindInRotated(a, 2))
+}

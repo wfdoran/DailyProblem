@@ -73,3 +73,61 @@ func RadixSort(a []uint32) {
 		to, from = from, to
 	}
 }
+
+func FindInSorted(a []int, t int) int {
+	lo := -1
+	hi := len(a)
+
+	for hi-lo > 1 {
+		mid := (hi + lo) / 2
+		if a[mid] == t {
+			return mid
+		}
+		if a[mid] > t {
+			hi = mid
+		} else {
+			lo = mid
+		}
+	}
+	return -1
+}
+
+func FindSlow(a []int, t int) int {
+	for i, v := range a {
+		if v == t {
+			return i
+		}
+	}
+	return -1
+}
+
+func FindInRotated(a []int, t int) int {
+	n := len(a)
+
+	if n < 5 {
+		return FindSlow(a, t)
+	}
+
+	if a[0] <= t && t <= a[n-1] {
+		return FindInSorted(a, t)
+	}
+	if a[0] <= a[n-1] {
+		return -1
+	}
+
+	m := n / 2
+
+	a1 := a[0:m]
+	a2 := a[m:n]
+
+	rv := FindInRotated(a1, t)
+	if rv != -1 {
+		return rv
+	}
+
+	rv = FindInRotated(a2, t)
+	if rv != -1 {
+		return rv + m
+	}
+	return -1
+}
