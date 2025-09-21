@@ -1,5 +1,7 @@
 package chapter10
 
+import "math"
+
 type Edge struct {
 	directed bool
 	src      int
@@ -14,6 +16,7 @@ type Graph struct {
 	edge         []Edge
 	nbrs_made    bool
 	nbrs         map[int][]int
+	nbr_edges    map[int][]int // index into edge
 }
 
 func NewGraph() *Graph {
@@ -69,15 +72,18 @@ func (g *Graph) generate_nbrs() {
 	}
 
 	g.nbrs = make(map[int][]int)
+	g.nbr_edges = make(map[int][]int)
 	for i := range g.num_vertices {
 		g.nbrs[i] = make([]int, 0)
+		g.nbr_edges[i] = make([]int, 0)
 	}
 
-	for _, e := range g.edge {
+	for idx, e := range g.edge {
 		g.nbrs[e.src] = append(g.nbrs[e.src], e.dst)
 		if !e.directed {
 			g.nbrs[e.dst] = append(g.nbrs[e.dst], e.src)
 		}
+		g.nbr_edges[e.src] = append(g.nbr_edges[e.src], idx)
 	}
 
 	g.nbrs_made = true
@@ -86,4 +92,37 @@ func (g *Graph) generate_nbrs() {
 func (g *Graph) OutDegree(v int) int {
 	g.generate_nbrs()
 	return len(g.nbrs[v])
+}
+
+func (g *Graph) Dijkstra(src int) []float64 {
+	if !g.nbrs_made {
+		g.generate_nbrs()
+	}
+	d := make([]float64, g.num_vertices)
+
+	for v := range g.num_vertices {
+		d[v] = math.MaxFloat64
+	}
+
+	d[src] = 0.0
+	var stack []int
+	stack = append(stack, src)
+
+	for len(stack) > 0 {
+		v := stack[0]
+		stack = stack[1:]
+
+		for _, e_idx := range g.nbr_edges[v] {
+			e := g.edge[e_idx]
+			dst := e.dst
+			dd := d[v] + e.weight
+
+			if dd < d[dst] {
+				d[dst] = dd
+				stack = append(stack, dst)
+			}
+		}
+	}
+
+	return d
 }
